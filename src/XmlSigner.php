@@ -180,7 +180,7 @@ final class XmlSigner
         // http://www.soapclient.com/XMLCanon.html
         $c14nSignedInfo = $signedInfoElement->C14N(true, false);
 
-        $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
+        $signatureValue = $this->cryptoSigner->computeSignature($this->cryptoSigner->computeDigest($c14nSignedInfo));
 
         $xpath = new DOMXpath($xml);
         $signatureValueElement = $this->xmlReader->queryDomNode($xpath, '//SignatureValue', $signatureElement);
