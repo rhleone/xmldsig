@@ -1,5 +1,5 @@
 {
-    "name": "selective/xmldsig",
+    "name": "rhleone/xmldsig",
     "description": "Sign XML Documents with Digital Signatures",
     "license": "MIT",
     "type": "library",
@@ -9,7 +9,7 @@
         "signatures",
         "verify"
     ],
-    "homepage": "https://github.com/selective-php/xmldsig",
+    "homepage": "https://github.com/rhleone/xmldsig",
     "require": {
         "php": "~8.0 || ~8.1 || ~8.2",
         "ext-dom": "*",
