@@ -151,14 +151,14 @@ final class PrivateKeyStore
             throw new UnexpectedValueException('Invalid private key');
         }
 
-        $key = $this->getPrivateKeyDetailKey($details['type']);
+        /*$key = $this->getPrivateKeyDetailKey($details['type']);
 
         if (isset($details[$key]['n'])) {
             $this->modulus = base64_encode($details[$key]['n']);
         }
         if (isset($details[$key]['e'])) {
             $this->publicExponent = base64_encode($details[$key]['e']);
-        }
+        }*/
     }
 
     /**
