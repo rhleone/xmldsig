@@ -65,6 +65,7 @@ final class XmlSigner
      */
     public function signDocument(DOMDocument $document, DOMElement $element = null): string
     {
+        $document->formatOutput = false;
         $element = $element ?? $document->documentElement;
 
         if ($element === null) {
@@ -100,6 +101,7 @@ final class XmlSigner
      */
     private function appendSignature(DOMDocument $xml, string $digestValue): void
     {
+         $document->formatOutput = true;
         $signatureElement = $xml->createElement('Signature');
         $signatureElement->setAttribute('xmlns', 'http://www.w3.org/2000/09/xmldsig#');
 
