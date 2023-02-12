@@ -101,7 +101,6 @@ final class XmlSigner
      */
     private function appendSignature(DOMDocument $xml, string $digestValue): void
     {
-        $xml->formatOutput = true;
         $signatureElement = $xml->createElement('Signature');
         $signatureElement->setAttribute('xmlns', 'http://www.w3.org/2000/09/xmldsig#');
 
