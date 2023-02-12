@@ -139,6 +139,12 @@ final class XmlSigner
         $transformElement->setAttribute('Algorithm', 'http://www.w3.org/2000/09/xmldsig#enveloped-signature');
         $transformsElement->appendChild($transformElement);
 
+        // REC-xml-c14n-20010315#WithComments
+        $transformElementREC = $xml->createElement('Transform');
+        $transformElementREC->setAttribute('Algorithm', 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments');
+        $transformsElement->appendChild($transformElementREC);
+
+
         $digestMethodElement = $xml->createElement('DigestMethod');
         $digestMethodElement->setAttribute('Algorithm', $this->cryptoSigner->getAlgorithm()->getDigestAlgorithmUrl());
         $referenceElement->appendChild($digestMethodElement);
@@ -177,7 +183,7 @@ final class XmlSigner
         // http://www.soapclient.com/XMLCanon.html
         $c14nSignedInfo = $signedInfoElement->C14N(true, false);
 
-        $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
+        $signatureValue = $this->cryptoSigner->computeSignature($this->cryptoSigner->computeDigest($c14nSignedInfo));
 
         // If certificates are loaded attach them to the KeyInfo element
         $certificates = $this->cryptoSigner->getPrivateKeyStore()->getCertificates();
