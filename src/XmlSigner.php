@@ -73,7 +73,8 @@ final class XmlSigner
         }
 
         $canonicalData = $element->C14N(true, false);
-
+         
+        dd($canonicalData);
         // Calculate and encode digest value
         $digestValue = $this->cryptoSigner->computeDigest($canonicalData);
 
