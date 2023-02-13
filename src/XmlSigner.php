@@ -181,9 +181,7 @@ final class XmlSigner
         
 
         // http://www.soapclient.com/XMLCanon.html
-        //$c14nSignedInfo = $signedInfoElement->C14N(true, false);
-        $c14nSignedInfo = $xml->documentElement->C14N(true, false);
-
+        $c14nSignedInfo = $signedInfoElement->C14N(true, false);
         $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
 
         // If certificates are loaded attach them to the KeyInfo element
