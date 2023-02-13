@@ -184,7 +184,7 @@ final class XmlSigner
         //$c14nSignedInfo = $signedInfoElement->C14N(true, false);
         $c14nSignedInfo = $xml->documentElement->C14N(true, false);
 
-        $signatureValue = $this->cryptoSigner->computeSignature($this->cryptoSigner->computeDigest($c14nSignedInfo));
+        $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
 
         // If certificates are loaded attach them to the KeyInfo element
         $certificates = $this->cryptoSigner->getPrivateKeyStore()->getCertificates();
