@@ -74,7 +74,6 @@ final class XmlSigner
 
         $canonicalData = $element->C14N(true, false);
          
-        dd($canonicalData);
         // Calculate and encode digest value
         $digestValue = $this->cryptoSigner->computeDigest($canonicalData);
 
@@ -182,7 +181,7 @@ final class XmlSigner
         
 
         // http://www.soapclient.com/XMLCanon.html
-        $c14nSignedInfo = $signedInfoElement->C14N(true, true);
+        $c14nSignedInfo = $signedInfoElement->C14N(true, false);
 
         $signatureValue = $this->cryptoSigner->computeSignature($this->cryptoSigner->computeDigest($c14nSignedInfo));
 
