@@ -74,7 +74,7 @@ final class X509Reader
 
         preg_match(self::PEM_REGEX_PATTERN, $exportedCertificate, $matches);
 
-        //return str_replace(["\r\n", "\n"], '', trim($matches[1]));
+        return str_replace(["\r\n", "\n"], '', trim($matches[1]));
         return $matches[1];
     }
 }
