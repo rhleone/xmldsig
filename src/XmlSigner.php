@@ -153,8 +153,12 @@ final class XmlSigner
 
         $digestValueElement = $xml->createElement('DigestValue', $digestValue);
         $referenceElement->appendChild($digestValueElement);
+         
+         // http://www.soapclient.com/XMLCanon.html
+        $c14nSignedInfo = $signedInfoElement->C14N(true, true);
+        $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
 
-        $signatureValueElement = $xml->createElement('SignatureValue', '');
+        $signatureValueElement = $xml->createElement('SignatureValue', base64_encode($signatureValue));
         $signatureElement->appendChild($signatureValueElement);
 
         $keyInfoElement = $xml->createElement('KeyInfo');
@@ -186,14 +190,11 @@ final class XmlSigner
             $this->appendX509Certificates($xml, $keyInfoElement, $certificates);
         }
         
-        // http://www.soapclient.com/XMLCanon.html
-        $c14nSignedInfo = $signedInfoElement->C14N(true, true);
-        $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
-
+       
         
-        $xpath = new DOMXpath($xml);
+        /*$xpath = new DOMXpath($xml);
         $signatureValueElement = $this->xmlReader->queryDomNode($xpath, '//SignatureValue', $signatureElement);
-        $signatureValueElement->nodeValue = base64_encode($signatureValue);
+        $signatureValueElement->nodeValue = base64_encode($signatureValue);*/
     }
 
     /**
