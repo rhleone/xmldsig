@@ -65,7 +65,7 @@ final class XmlSigner
      */
     public function signDocument(DOMDocument $document, DOMElement $element = null): string
     {
-        $document->formatOutput = false;
+       
         $element = $element ?? $document->documentElement;
 
         if ($element === null) {
@@ -78,6 +78,7 @@ final class XmlSigner
         $digestValue = $this->cryptoSigner->computeDigest($canonicalData);
 
         $digestValue = base64_encode($digestValue);
+        
         $this->appendSignature($document, $digestValue);
 
         $result = $document->saveXML();

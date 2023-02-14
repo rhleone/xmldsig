@@ -41,7 +41,7 @@ final class CryptoSigner implements CryptoSignerInterface
         }
 
         // Calculate and encode digest value
-        $status = openssl_sign($data, $signatureValue, $privateKey, 'sha256WithRSAEncryption');
+        $status = openssl_sign($data, $signatureValue, $privateKey, $this->algorithm->getSignatureSslAlgorithm());
 
         if (!$status) {
             throw new XmlSignerException('Computing of the signature failed');
