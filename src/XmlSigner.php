@@ -66,7 +66,7 @@ final class XmlSigner
     public function signDocument(DOMDocument $document, DOMElement $element = null): string
     {
        
-        $element = $element ?? $document->documentElement;
+        $element = $element ?? $document;
 
         if ($element === null) {
             throw new XmlSignerException('Invalid XML document element');
@@ -78,7 +78,7 @@ final class XmlSigner
         $digestValue = $this->cryptoSigner->computeDigest($canonicalData);
 
         $digestValue = base64_encode($digestValue);
-        
+
         $this->appendSignature($document, $digestValue);
 
         $result = $document->saveXML();
