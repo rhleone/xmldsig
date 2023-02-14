@@ -66,7 +66,7 @@ final class XmlSigner
     public function signDocument(DOMDocument $document, DOMElement $element = null): string
     {
        
-        $element = $element ?? $document;
+        $element = $element ?? $document->documentElement;
 
         if ($element === null) {
             throw new XmlSignerException('Invalid XML document element');
@@ -78,7 +78,7 @@ final class XmlSigner
         $digestValue = $this->cryptoSigner->computeDigest($canonicalData);
 
         $digestValue = base64_encode($digestValue);
-
+        
         $this->appendSignature($document, $digestValue);
 
         $result = $document->saveXML();
@@ -179,17 +179,16 @@ final class XmlSigner
         }
         */
 
-        
-
-        // http://www.soapclient.com/XMLCanon.html
-        $c14nSignedInfo = $signedInfoElement->C14N(true, false);
-        $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
-
         // If certificates are loaded attach them to the KeyInfo element
         $certificates = $this->cryptoSigner->getPrivateKeyStore()->getCertificates();
         if ($certificates) {
             $this->appendX509Certificates($xml, $keyInfoElement, $certificates);
         }
+        
+        // http://www.soapclient.com/XMLCanon.html
+        $c14nSignedInfo = $signedInfoElement->C14N(true, false);
+        $signatureValue = $this->cryptoSigner->computeSignature($this->cryptoSigner->computeDigest($c14nSignedInfo));
+
         
         $xpath = new DOMXpath($xml);
         $signatureValueElement = $this->xmlReader->queryDomNode($xpath, '//SignatureValue', $signatureElement);
