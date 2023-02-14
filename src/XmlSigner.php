@@ -73,7 +73,7 @@ final class XmlSigner
             throw new XmlSignerException('Invalid XML document element');
         }
 
-        $canonicalData = $element->C14N(true, false);
+        $canonicalData = $element->C14N(true, true);
          
         // Calculate and encode digest value
         $digestValue = $this->cryptoSigner->computeDigest($canonicalData);
@@ -187,7 +187,7 @@ final class XmlSigner
         }
         
         // http://www.soapclient.com/XMLCanon.html
-        $c14nSignedInfo = $signedInfoElement->C14N(true, false);
+        $c14nSignedInfo = $signedInfoElement->C14N(true, true);
         $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
 
         
