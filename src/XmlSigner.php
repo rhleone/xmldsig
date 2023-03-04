@@ -159,7 +159,7 @@ final class XmlSigner
         $keyInfoElement = $xml->createElement('KeyInfo');
         $signatureElement->appendChild($keyInfoElement);
 
-        /* comment 'cause these are unnecessary tags
+         
         $keyValueElement = $xml->createElement('KeyValue');
         $keyInfoElement->appendChild($keyValueElement);
 
@@ -177,7 +177,7 @@ final class XmlSigner
             $exponentElement = $xml->createElement('Exponent', $publicExponent);
             $rsaKeyValueElement->appendChild($exponentElement);
         }
-        */
+        
 
         // If certificates are loaded attach them to the KeyInfo element
         $certificates = $this->cryptoSigner->getPrivateKeyStore()->getCertificates();
