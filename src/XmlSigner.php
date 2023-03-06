@@ -39,7 +39,7 @@ final class XmlSigner
     public function signXml(string $data): string
     {
         // Read the xml file content
-        $xml = new DOMDocument();
+        $xml = new DOMDocument('1.0','UTF-8');
 
         // Whitespaces must be preserved
         $xml->preserveWhiteSpace = true;
@@ -72,8 +72,7 @@ final class XmlSigner
             throw new XmlSignerException('Invalid XML document element');
         }
 
-        $canonicalData = $element->C14N(true, false);
-         
+        $canonicalData = $element->C14N(true,false);
         // Calculate and encode digest value
         $digestValue = $this->cryptoSigner->computeDigest($canonicalData);
 
@@ -153,13 +152,13 @@ final class XmlSigner
         $digestValueElement = $xml->createElement('DigestValue', $digestValue);
         $referenceElement->appendChild($digestValueElement);
 
-        $signatureValueElement = $xml->createElement('SignatureValue', '');
+        $signatureValueElement = $xml->createElement('SignatureValue','');
         $signatureElement->appendChild($signatureValueElement);
 
         $keyInfoElement = $xml->createElement('KeyInfo');
         $signatureElement->appendChild($keyInfoElement);
 
-         
+        /* comment 'cause these are unnecessary tags
         $keyValueElement = $xml->createElement('KeyValue');
         $keyInfoElement->appendChild($keyValueElement);
 
@@ -177,22 +176,24 @@ final class XmlSigner
             $exponentElement = $xml->createElement('Exponent', $publicExponent);
             $rsaKeyValueElement->appendChild($exponentElement);
         }
-        
+        */
 
         // If certificates are loaded attach them to the KeyInfo element
-        $certificates = $this->cryptoSigner->getPrivateKeyStore()->getCertificates();
-        if ($certificates) {
-            $this->appendX509Certificates($xml, $keyInfoElement, $certificates);
-        }
+       
         
-        // http://www.soapclient.com/XMLCanon.html
-        $c14nSignedInfo = $signedInfoElement->C14N(true, false);
-        $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
-
+         // http://www.soapclient.com/XMLCanon.html
+         $c14nSignedInfo = $signedInfoElement->C14N(true, false);
+         $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
+        
         
         $xpath = new DOMXpath($xml);
         $signatureValueElement = $this->xmlReader->queryDomNode($xpath, '//SignatureValue', $signatureElement);
         $signatureValueElement->nodeValue = base64_encode($signatureValue);
+
+        $certificates = $this->cryptoSigner->getPrivateKeyStore()->getCertificates();
+        if ($certificates) {
+            $this->appendX509Certificates($xml, $keyInfoElement, $certificates);
+        }
     }
 
     /**
