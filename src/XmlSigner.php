@@ -40,7 +40,7 @@ final class XmlSigner
     {
         // Read the xml file content
         $xml = new DOMDocument('1.0','UTF-8');
-
+        
         // Whitespaces must be preserved
         $xml->preserveWhiteSpace = true;
         $xml->formatOutput = false;
@@ -72,7 +72,8 @@ final class XmlSigner
             throw new XmlSignerException('Invalid XML document element');
         }
 
-        $canonicalData = $element->C14N(true,false);
+        $canonicalData = $element->C14N(true,false); 
+        
         // Calculate and encode digest value
         $digestValue = $this->cryptoSigner->computeDigest($canonicalData);
 
@@ -103,7 +104,7 @@ final class XmlSigner
     {
         $signatureElement = $xml->createElement('Signature');
         $signatureElement->setAttribute('xmlns', 'http://www.w3.org/2000/09/xmldsig#');
-
+        
         // Append the element to the XML document.
         // We insert the new element as root (child of the document)
 
@@ -183,7 +184,7 @@ final class XmlSigner
         
          // http://www.soapclient.com/XMLCanon.html
          $c14nSignedInfo = $signedInfoElement->C14N(true, false);
-         $signatureValue = $this->cryptoSigner->computeSignature($c14nSignedInfo);
+         $signatureValue = $this->cryptoSigner->computeSignature($this->cryptoSigner->computeDigest($c14nSignedInfo));
         
         
         $xpath = new DOMXpath($xml);
