@@ -41,6 +41,7 @@ final class CryptoSigner implements CryptoSignerInterface
         }
 
         // Calculate and encode digest value
+        
         $status = openssl_sign($data, $signatureValue, $privateKey, $this->algorithm->getSignatureSslAlgorithm());
 
         if (!$status) {
@@ -68,6 +69,7 @@ final class CryptoSigner implements CryptoSignerInterface
     public function computeDigest(string $data): string
     {
         // Calculate and encode digest value
+        
         $digestValue = openssl_digest($data, $this->algorithm->getDigestAlgorithmName(), true);
 
         if ($digestValue === false) {
